@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FontMeasurer</string>
+    <string name="sampleWord1">АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890</string>
+</resources>

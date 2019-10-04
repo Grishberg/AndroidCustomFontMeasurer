@@ -1,6 +1,5 @@
 package com.github.grishberg.fontmeasurer
 
-import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.TextPaint
@@ -36,6 +35,8 @@ class MainActivity : AppCompatActivity() {
             "FONT_SIZE", "font scale = ${resources.configuration.fontScale}," +
                     " font size = ${textView.textSize}"
         )
+        val measures = mutableListOf<String>()
+
         for (symbol in text) {
             val symbolAsString = "$symbol"
 
@@ -43,11 +44,14 @@ class MainActivity : AppCompatActivity() {
             val height = roundAvoid(fm.descent.toDouble() - fm.top, 3)
             val width = paint.measureText(symbolAsString)
 
-            Log.d(
-                "FONT_SIZE", "symbol = '$symbol', " +
-                        " h = $height, w = $width"
-            )
+            measures.add("{'symbol':'$symbol', 'h' : $height, 'w' : $width}")
         }
+        val json =
+            "{'scale' : ${resources.configuration.fontScale},\n'size' : ${textView.textSize},\n" +
+                    "'symbols': [ " + measures.joinToString(",\n") + "]}"
+        Log.d(
+            "FONT_SIZE", json
+        )
     }
 
     private fun roundAvoid(value: Double, places: Int): Double {

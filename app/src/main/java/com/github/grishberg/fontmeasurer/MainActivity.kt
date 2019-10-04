@@ -7,6 +7,8 @@ import android.text.TextPaint
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,23 +24,23 @@ class MainActivity : AppCompatActivity() {
         setFontToTextView(textView1)
 
         val text = getString(R.string.sampleWord1)
-        printTextMetrix(text, textView1.paint)
+        printTextMetrics(text, textView1.paint, textView1)
     }
 
     private fun setFontToTextView(textView: TextView) {
         textView.setTypeface(typeface)
     }
 
-    private fun printTextMetrix(text: String, paint: TextPaint) {
+    private fun printTextMetrics(text: String, paint: TextPaint, textView: TextView) {
+        Log.d(
+            "FONT_SIZE", "font scale = ${resources.configuration.fontScale}," +
+                    " font size = ${textView.textSize}"
+        )
         for (symbol in text) {
-            val bounds = Rect()
             val symbolAsString = "$symbol"
-            paint.getTextBounds(symbolAsString, 0, 1, bounds)
-            val textHeight = bounds.height()
-            val textWidth = bounds.width()
 
             val fm = paint.fontMetrics
-            val height = Math.ceil(fm.descent.toDouble() - fm.top).toInt()
+            val height = roundAvoid(fm.descent.toDouble() - fm.top, 3)
             val width = paint.measureText(symbolAsString)
 
             Log.d(
@@ -46,5 +48,10 @@ class MainActivity : AppCompatActivity() {
                         " h = $height, w = $width"
             )
         }
+    }
+
+    private fun roundAvoid(value: Double, places: Int): Double {
+        val scale = 10.0.pow(places.toDouble())
+        return (value * scale).roundToInt() / scale
     }
 }
